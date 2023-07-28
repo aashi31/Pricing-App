@@ -26,7 +26,6 @@ def calculate_price(request):
         price = (base_price + (additional_distance * additional_price)) + (time_traveled * time_multiplier) + waiting_charges
         return JsonResponse({"price": price})
     else:
-        # If the request method is not GET, return a Method Not Allowed response
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 def homepage(request):
