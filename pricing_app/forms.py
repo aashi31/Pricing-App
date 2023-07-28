@@ -1,4 +1,4 @@
-# pricing_app/forms.py
+
 from django import forms
 from .models import PricingConfiguration, ConfigurationChangeLog
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
