@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pricing App - Homepage</title>
+    <style>
+        body 
+        {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2; 
+        }
+        {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Pricing App</h1>
+    <form id="priceForm">
+        <label for="distance_traveled">Distance Traveled (in km):</label>
+        <input type="number" id="distance_traveled" name="distance_traveled" required><br/>
+
+        <label for="time_traveled">Time Traveled (in hours):</label>
+        <input type="number" id="time_traveled" name="time_traveled" required><br/>
+
+        <label for="day_of_week">Day of the Week:</label>
+        <select id="day_of_week" name="day_of_week">
+            <option value="Mon">Monday</option>
+            <option value="Tue">Tuesday</option>
+            <option value="Wed">Wednesday</option>
+            <option value="Thu">Thursday</option>
+            <option value="Fri">Friday</option>
+            <option value="Sat">Saturday</option>
+            <option value="Sun">Sunday</option>
+        </select>
+
+        <button type="button" id="calculateBtn">Calculate Price</button>
+    </form>
+
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            console.log("Button clicked!");
+    
+            const distanceTraveled = document.getElementById('distance_traveled').value;
+            const timeTraveled = document.getElementById('time_traveled').value;
+            const dayOfWeek = document.getElementById('day_of_week').value;
+    
+            console.log("Distance Traveled:", distanceTraveled);
+            console.log("Time Traveled:", timeTraveled);
+            console.log("Day of the Week:", dayOfWeek);
+    
+            // Check if the input fields exist and have valid values
+            if (distanceTraveled && timeTraveled && dayOfWeek) {
+                const distanceValue = parseFloat(distanceTraveled);
+                const timeValue = parseFloat(timeTraveled);
+    
+                console.log("Parsed Distance:", distanceValue);
+                console.log("Parsed Time:", timeValue);
+    
+                fetch(`/pricing/calculate_price/?distance_traveled=${distanceValue}&time_traveled=${timeValue}&day_of_week=${dayOfWeek}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("API Response:", data);
+                        document.getElementById('result').innerHTML = `<p>Price: ${data.price.toFixed(2)} Rs</p>`;
+                    })
+                    .catch(error => {
+                        console.log("API Error:", error);
+                        document.getElementById('result').innerHTML = `<p>Error: ${error.message}</p>`;
+                    });
+            } else {
+                console.log("Input Fields Missing");
+                // Handle the case when one or more input fields are missing or empty
+                document.getElementById('result').innerHTML = '<p>Error: Please fill in all the input fields.</p>';
+            }
+        });
+    </script>
+    
+    
+    </body>
+</html>
